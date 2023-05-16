@@ -1,12 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
+# Name:  Anzar Naseer
+# ID: 21087748
+
 # The issue of global warming is currently one of the most significant challenges facing humanity. While it is widely known that the increase in atmospheric carbon dioxide due to human activities is likely a contributing factor to global warming, it is important to investigate and analyze the data to gain a better understanding of this phenomenon. To achieve this goal, I will be using the "World Development Indicators" dataset available on the WorldBank website. Specifically, I will be focusing on the "WDIData_T.csv" and "WDICountry.csv" files to analyze CO2 emissions data. Through this analysis, I aim to answer important questions, such as identifying the top 10 countries with the highest CO2 emissions (in kt and metric tons per capita) and examining their emissions trends. Additionally, I will explore the overall emissions trend of all countries and determine which sectors contribute most heavily to emissions. The dataset contains extensive information, comprising 7,678,806 rows of data on 263 countries, with 1,437 different types of development indicators.
 
 
 
 """
-Libraries for fundamental scientific computing (NumPy) and data manipulation and analysis (Pandas) Plotting and visualization (Matplotlib)
+Libraries for fundamental scientific computing (NumPy)
+and data manipulation and analysis (Pandas)
+Plotting and visualization (Matplotlib)
 
 """
 
@@ -21,12 +26,55 @@ from textwrap import wrap
        
 
 # Read in required data
+
+def read_worldbank_data(filename):
+    # Read CSV file into a dataframe
+    df = pd.read_csv(filename)
+
+    # Transpose dataframe
+    df_t = df.transpose()
+
+    # Get new column headers from the first row of the transposed dataframe
+    new_cols = df_t.iloc[0]
+
+    # Remove the old header row from the transposed dataframe
+    df_t = df_t[1:]
+
+    # Set the new column headers for the transposed dataframe
+    df_t.columns = new_cols
+
+    # Reset the index of the transposed dataframe to make year and country columns regular columns
+    df_t = df_t.reset_index()
+
+    # Rename the columns to year and country respectively
+    df_t = df_t.rename(columns={'Year': 'Country', 'Country': 'Indicator'})
+
+    # Return two dataframes: one with years as columns and one with countries as columns
+    df_year = df_t.set_index('Indicator')
+    df_country = df_t.set_index('Country')
+
+    return df_year, df_country
+
 world_data = pd.read_csv('WDIData_T.csv')
 supplemental_data = pd.read_csv('WDICountry.csv')
+df_year, df_country = read_worldbank_data('WDIData_T.csv')
 
 # Remove aggregated data
 countries_to_exclude = '|'.join(supplemental_data[supplemental_data['Currency Unit'].isna()]['Country Code'].unique().tolist())
 cleaned_data = world_data[~world_data['CountryCode'].str.contains(countries_to_exclude)]
+
+
+# Use .describe() to get summary statistics of the numerical columns
+summary_stats = df_country.describe()
+print(summary_stats)
+
+# Calculate the correlation matrix of the numerical columns
+correlation_matrix = df_country.corr()
+print(correlation_matrix)
+
+# Calculate the mean of each numerical column
+column_means = df_country.mean()
+print(column_means)
 
 
 def filter_data(data):
@@ -164,13 +212,14 @@ plt.show()
 countrylist = T10_country.split('|')
 plt.figure(figsize = (5,7))
 lineplot(stage2co, countrylist, 1, 1, 2005.5, 2017, 0, 70, 1)
-
+plt.title('CO2 Emissions (metric tons per capita)')
 plt.show()
 
 
 plt.figure(figsize = (5,7))
 countrylist = T10kt_country.split('|')
 lineplot(stage2cokt,countrylist, 1, 1, 2005.5, 2017, 1e5, 1.3e7, 2)
+plt.title('CO2 Emissions (metric tons per capita)')
 plt.show()
 
 
@@ -230,6 +279,7 @@ hBar(mTransVal, mEHCountry, 4, 'Transport')
 hBar(mMICVal, mEHCountry, 3, 'Manufacturing Industries and Construction')
 hBar(mResidVal, mEHCountry, 2, 'Residential Buildings and Commercial and Public Services')
 hBar(mOtherVal, mEHCountry, 1, 'Other sectors, excluding Residential Buildings and Commercial and Public Services')
+plt.title('Indicators and percentages w.r.t. the Country')
 plt.show()
 
 # On average, the top ten CO2 emitters (kt) attribute 70.93% of their emissions to transportation, electricity, and heat production.
