@@ -1,9 +1,6 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-# Name:  Anzar Naseer
-# ID: 21087748
-
 # The issue of global warming is currently one of the most significant challenges facing humanity. While it is widely known that the increase in atmospheric carbon dioxide due to human activities is likely a contributing factor to global warming, it is important to investigate and analyze the data to gain a better understanding of this phenomenon. To achieve this goal, I will be using the "World Development Indicators" dataset available on the WorldBank website. Specifically, I will be focusing on the "WDIData_T.csv" and "WDICountry.csv" files to analyze CO2 emissions data. Through this analysis, I aim to answer important questions, such as identifying the top 10 countries with the highest CO2 emissions (in kt and metric tons per capita) and examining their emissions trends. Additionally, I will explore the overall emissions trend of all countries and determine which sectors contribute most heavily to emissions. The dataset contains extensive information, comprising 7,678,806 rows of data on 263 countries, with 1,437 different types of development indicators.
 
 
