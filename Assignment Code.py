@@ -9,9 +9,7 @@
 
 
 """
-Libraries for fundamental scientific computing (NumPy)
-and data manipulation and analysis (Pandas)
-Plotting and visualization (Matplotlib)
+Libraries for fundamental scientific computing (NumPy) and data manipulation and analysis (Pandas) Plotting and visualization (Matplotlib)
 
 """
 
