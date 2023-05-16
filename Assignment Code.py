@@ -164,6 +164,7 @@ plt.show()
 countrylist = T10_country.split('|')
 plt.figure(figsize = (5,7))
 lineplot(stage2co, countrylist, 1, 1, 2005.5, 2017, 0, 70, 1)
+
 plt.show()
 
 
